@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndiaGPT - India's Own Intelligent AI</title>
+    <meta name="description" content="IndiaGPT - India's sovereign AI chatbot. Supports Hindi + 20+ Indian languages, understands Indian context, culture, laws & current affairs.">
+
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        saffron: '#FF9933',
+                        indianGreen: '#138808',
+                        navy: '#0A2540',
+                        gold: '#F4D35E',
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #FF9933, #F4D35E, #138808);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #0A2540 0%, #1e3a8a 50%, #FF9933 100%);
+        }
+        #chat-messages {
+            scroll-behavior: smooth;
+        }
+        #full-chat {
+            position: fixed;
+            inset: 0;
+            background: #f9fafb;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body class="font-poppins bg-gray-50 text-gray-900">
+
+<!-- Navbar -->
+<nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-md z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold">
+            <span class="gradient-text">IndiaGPT</span>
+        </div>
+        <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
+            <a href="#features" class="hover:text-saffron transition">Features</a>
+            <a href="#why" class="hover:text-saffron transition">Why Us</a>
+            <button onclick="openChat()" class="hover:text-saffron transition">Try Chat</button>
+        </div>
+        <button onclick="openChat()" class="bg-saffron hover:bg-orange-500 text-white px-6 py-2.5 rounded-full font-semibold transition shadow-lg">
+            Try Now
+        </button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero-bg min-h-screen flex items-center text-white pt-20">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight">
+                India<span class="gradient-text">GPT</span>
+            </h1>
+            <p class="text-2xl md:text-3xl mt-4 font-light">भारत का अपना बुद्धिमान AI</p>
+            <p class="text-xl mt-6 max-w-lg leading-relaxed opacity-90">
+                Understands Indian languages, culture, laws, current affairs, history & context better than anyone.
+            </p>
+            <div class="mt-10 flex flex-wrap gap-4">
+                <button onclick="openChat()" class="bg-white text-navy px-8 py-4 rounded-full text-lg font-bold hover:shadow-xl transition transform hover:scale-105">
+                    Try IndiaGPT Now →
+                </button>
+                <a href="#features" class="border-2 border-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-navy transition">
+                    Explore Features
+                </a>
+            </div>
+        </div>
+        <div class="hidden md:block">
+            <div class="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 text-center">
+                <div class="text-9xl">🧠🇮🇳</div>
+                <p class="mt-4 text-lg opacity-80">India's Sovereign AI</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold">Powerful Features</h2>
+            <p class="text-xl text-gray-600 mt-4">Built for Indians, by Indians</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="bg-gradient-to-br from-saffron/10 to-gold/10 p-8 rounded-3xl border border-saffron/20 hover:shadow-2xl transition">
+                <div class="text-5xl mb-4">🌐</div>
+                <h3 class="text-2xl font-bold mb-3">22+ Indian Languages</h3>
+                <p class="text-gray-600">Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam + more.</p>
+            </div>
+            <div class="bg-gradient-to-br from-navy/10 to-blue-600/10 p-8 rounded-3xl border hover:shadow-2xl transition">
+                <div class="text-5xl mb-4">🕌</div>
+                <h3 class="text-2xl font-bold mb-3">Indian Context Mastery</h3>
+                <p class="text-gray-600">History, mythology, Constitution, current affairs, local laws & festivals.</p>
+            </div>
+            <div class="bg-gradient-to-br from-indianGreen/10 to-green-600/10 p-8 rounded-3xl border hover:shadow-2xl transition">
+                <div class="text-5xl mb-4">🔒</div>
+                <h3 class="text-2xl font-bold mb-3">Privacy First</h3>
+                <p class="text-gray-600">Made in India • Data sovereignty • No unnecessary tracking</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Us -->
+<section id="why" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-8">Why IndiaGPT?</h2>
+        <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+            While global AIs are trained mostly on Western data,
+            <strong>IndiaGPT is built to truly understand Bharat</strong> —
+            our values, diversity, nuances, and aspirations.
+        </p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-navy text-white py-12">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <p class="text-2xl font-bold mb-2 gradient-text">IndiaGPT</p>
+        <p>© 2026 IndiaGPT.in. All rights reserved. Made with ❤️ for Bharat</p>
+    </div>
+</footer>
+
+<!-- FULL PAGE CHAT -->
+<div id="full-chat">
+    <div class="bg-white shadow px-6 py-4 flex justify-between items-center">
+        <h2 class="text-xl font-bold gradient-text">IndiaGPT Chat</h2>
+        <button onclick="closeChat()" class="text-saffron font-semibold">← Back to Home</button>
+    </div>
+
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+        <div class="flex justify-start">
+            <div class="bg-navy text-white px-5 py-3 rounded-2xl max-w-[80%]">
+                Namaste! I'm IndiaGPT. How can I help you today? 🇮🇳
+            </div>
+        </div>
+    </div>
+
+    <div class="border-t bg-white p-4 flex gap-3">
+        <input id="user-input" type="text" placeholder="Ask me anything..."
+               class="flex-1 px-5 py-3 rounded-full border focus:outline-none focus:border-saffron">
+        <button id="send-btn"
+                class="bg-saffron text-white px-6 py-3 rounded-full font-semibold disabled:opacity-50"
+                disabled>
+            Send
+        </button>
+    </div>
+</div>
+
+<script>
+    const fullChat = document.getElementById('full-chat');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const messagesDiv = document.getElementById('chat-messages');
+
+    function openChat() {
+        fullChat.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => userInput.focus(), 100);
+    }
+
+    function closeChat() {
+        fullChat.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function addMessage(text, isUser = false) {
+        const row = document.createElement('div');
+        row.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
+
+        const bubble = document.createElement('div');
+        bubble.className = `px-5 py-3 rounded-2xl max-w-[80%] ${
+            isUser ? 'bg-saffron text-white' : 'bg-white border'
+        }`;
+        bubble.textContent = text;
+
+        row.appendChild(bubble);
+        messagesDiv.appendChild(row);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        addMessage(text, true);
+        userInput.value = '';
+        sendBtn.disabled = true;
+
+        try {
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await res.json();
+            addMessage(data.reply || "No response");
+        } catch {
+            addMessage("Server error. Please try again.");
+        }
+
+        sendBtn.disabled = false;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    userInput.addEventListener('input', () => {
+        sendBtn.disabled = userInput.value.trim() === '';
+    });
+</script>
+
+</body>
+</html>
