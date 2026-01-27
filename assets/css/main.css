@@ -19,7 +19,8 @@
     border: 1px solid rgba(255,153,51,0.2);
 }
 
-/* Floating chat button */
+/* ================= CHAT ================= */
+
 #chat-fab {
     position: fixed;
     bottom: 20px;
@@ -36,7 +37,6 @@
     z-index: 1000;
 }
 
-/* Chat widget */
 #chat-widget {
     position: fixed;
     bottom: 90px;
@@ -91,23 +91,28 @@
     font-weight: 600;
 }
 
-/* CONTACT MODAL */
+/* ================= CONTACT MODAL (FIXED) ================= */
+
 #contact-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.5);
     display: none;
-    align-items: center;
-    justify-content: center;
     z-index: 2000;
 }
 
+/* 🔒 HARD-CENTERED MODAL (NO FLEX DEPENDENCY) */
 #contact-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: white;
     width: 90%;
     max-width: 420px;
     border-radius: 16px;
     overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 .contact-header {
