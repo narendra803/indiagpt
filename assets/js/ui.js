@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // CHAT
+    /* ================= CHAT ================= */
     const chatWidget = document.getElementById("chat-widget");
     const chatFab = document.getElementById("chat-fab");
     const closeChat = document.getElementById("close-chat");
@@ -12,9 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     chatFab.addEventListener("click", window.toggleChat);
     closeChat.addEventListener("click", window.toggleChat);
 
-    // CONTACT MODAL
+    /* ================= CONTACT MODAL ================= */
     const contactOverlay = document.getElementById("contact-overlay");
 
+    // 🔑 MUST be on window for Cloudflare
     window.openContact = function () {
         contactOverlay.style.display = "flex";
     };
@@ -23,9 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
         contactOverlay.style.display = "none";
     };
 
+    // Close when clicking outside modal
     contactOverlay.addEventListener("click", (e) => {
         if (e.target === contactOverlay) {
-            closeContact();
+            window.closeContact();
         }
     });
 });
