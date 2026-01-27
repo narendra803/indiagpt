@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IndiaGPT - AI & Digital Solutions for Small Businesses</title>
-    <meta name="description" content="IndiaGPT helps small businesses with websites, AI chatbots, automation, and digital transformation.">
 
-    <!-- Tailwind CDN -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,37 +25,34 @@
         }
     </script>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/main.css">
 </head>
 
 <body class="font-poppins bg-gray-50 text-gray-900">
 
-<!-- ================= NAVBAR ================= -->
+<!-- NAVBAR -->
 <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-md z-40">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <div class="text-2xl font-bold">
-            <span class="gradient-text">IndiaGPT</span>
-        </div>
+        <div class="text-2xl font-bold gradient-text">IndiaGPT</div>
+
         <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
-            <a href="#services" class="hover:text-saffron transition">Services</a>
-            <a href="#why" class="hover:text-saffron transition">Why IndiaGPT</a>
+            <a href="#services" class="hover:text-saffron">Services</a>
+            <a href="#why" class="hover:text-saffron">Why IndiaGPT</a>
+            <button onclick="openContact()" class="hover:text-saffron">Contact</button>
         </div>
 
-        <!-- ✅ CHAT OPENS FROM HERE -->
         <button onclick="toggleChat()"
-            class="bg-saffron hover:bg-orange-500 text-white px-6 py-2.5 rounded-full font-semibold transition shadow-lg">
+            class="bg-saffron hover:bg-orange-500 text-white px-6 py-2.5 rounded-full font-semibold shadow-lg">
             Talk to Us
         </button>
     </div>
 </nav>
 
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 <section class="hero-bg min-h-screen flex items-center text-white pt-20">
     <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+
         <div>
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight">
                 India<span class="gradient-text">GPT</span>
@@ -65,21 +61,19 @@
                 AI & Digital Solutions for Small Businesses
             </p>
             <p class="text-xl mt-6 max-w-lg leading-relaxed opacity-90">
-                छोटे बिज़नेस के लिए आसान डिजिटल और AI समाधान।
-                Websites, automation, and AI chatbots within your budget.
+                छोटे बिज़नेस के लिए आसान डिजिटल और AI समाधान। Websites, automation, and AI chatbots within your budget..
             </p>
 
             <div class="mt-10 flex flex-wrap gap-4">
-                <!-- ✅ CHAT OPENS FROM HERE -->
                 <button onclick="toggleChat()"
                     class="bg-white text-navy px-8 py-4 rounded-full text-lg font-bold hover:shadow-xl transition transform hover:scale-105">
                     Chat With Us →
                 </button>
 
-                <a href="#services"
+                <button onclick="openContact()"
                     class="border-2 border-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-navy transition">
-                    Explore Services
-                </a>
+                    Contact Us
+                </button>
             </div>
         </div>
 
@@ -91,10 +85,11 @@
                 </p>
             </div>
         </div>
+
     </div>
 </section>
 
-<!-- ================= SERVICES ================= -->
+<!-- SERVICES -->
 <section id="services" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
@@ -108,73 +103,83 @@
             <div class="service-card">
                 <div class="text-5xl mb-4">🌐</div>
                 <h3 class="text-2xl font-bold mb-3">Website Creation</h3>
-                <p class="text-gray-600">
-                    Professional business websites, landing pages, and portfolios.
-                </p>
+                <p class="text-gray-600">Professional business websites, landing pages, and portfolios.</p>
             </div>
 
             <div class="service-card">
                 <div class="text-5xl mb-4">🤖</div>
                 <h3 class="text-2xl font-bold mb-3">AI Chatbots</h3>
-                <p class="text-gray-600">
-                    Smart chatbots for support, FAQs, and lead generation.
-                </p>
+                <p class="text-gray-600">Smart chatbots for support, FAQs, and lead generation.</p>
             </div>
 
             <div class="service-card">
                 <div class="text-5xl mb-4">⚙️</div>
                 <h3 class="text-2xl font-bold mb-3">Business Automation</h3>
-                <p class="text-gray-600">
-                    Automate workflows, reports, and notifications.
-                </p>
+                <p class="text-gray-600">Automate workflows, reports,  notifications and processes.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ================= WHY ================= -->
+<!-- WHY INDIA GPT (CONTENT RESTORED) -->
 <section id="why" class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 text-center">
-        <h2 class="text-4xl md:text-5xl font-bold mb-8">Why IndiaGPT?</h2>
-        <p class="text-xl max-w-3xl mx-auto leading-relaxed">
-            We focus on simple, practical technology solutions for small businesses.
-            No complexity, no unnecessary cost — just results.        
-हम छोटे व्यवसायों के लिए आसान, भरोसेमंद और असरदार तकनीकी समाधान प्रदान करते हैं।
-बिना जटिलता, बिना फालतू खर्च — सीधा और ठोस परिणाम।
+        <h2 class="text-4xl md:text-5xl font-bold mb-10">Why IndiaGPT?</h2>
+
+        <p class="text-xl max-w-3xl mx-auto leading-relaxed mb-6">
+            IndiaGPT focuses on solving real problems for small businesses.
+            We don’t sell complex technology — we build simple, reliable, and affordable
+            digital solutions that actually help businesses grow.
+        </p>
+
+        <p class="text-xl max-w-3xl mx-auto leading-relaxed text-gray-700">
+            IndiaGPT छोटे और मध्यम व्यवसायों की वास्तविक समस्याओं को समझता है।
+            हम जटिल टेक्नोलॉजी नहीं बेचते — बल्कि सरल, भरोसेमंद और किफायती
+            डिजिटल समाधान बनाते हैं जो व्यवसाय को आगे बढ़ाने में मदद करते हैं।
         </p>
     </div>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="bg-navy text-white py-12">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-2xl font-bold mb-2 gradient-text">IndiaGPT</p>
-        <p class="opacity-90">AI & Digital Solutions for Small Businesses</p>
-        <p class="mt-2 text-sm opacity-70">
-            © 2026 IndiaGPT.in. All rights reserved.
-        </p>
-    </div>
+<!-- FOOTER -->
+<footer class="bg-navy text-white py-12 text-center">
+    <p class="text-2xl font-bold gradient-text">IndiaGPT</p>
+    <p class="opacity-80 mt-2">AI & Digital Solutions for Small Businesses</p>
+    <p class="text-sm opacity-70 mt-1">© 2026 IndiaGPT.in</p>
 </footer>
 
-<!-- ================= FLOATING CHAT BUTTON (UNCHANGED) ================= -->
-<button id="chat-fab" aria-label="Chat">💬</button>
+<!-- CONTACT MODAL -->
+<div id="contact-overlay">
+    <div id="contact-modal">
+        <div class="contact-header">
+            <h3>Contact IndiaGPT</h3>
+            <button onclick="closeContact()">✕</button>
+        </div>
 
-<!-- ================= CHAT WIDGET (UNCHANGED) ================= -->
+        <form class="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="tel" placeholder="Contact Number" required>
+            <textarea placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!-- CHAT -->
+<button id="chat-fab">💬</button>
+
 <div id="chat-widget">
     <div class="chat-header">
         <span>IndiaGPT Support</span>
         <button id="close-chat">✕</button>
     </div>
-
     <div id="chat-messages" class="chat-body"></div>
-
     <div class="chat-input">
         <input id="user-input" placeholder="Ask about our services…" />
         <button id="send-btn" disabled>Send</button>
     </div>
 </div>
 
-<!-- ================= SCRIPTS ================= -->
 <script src="./assets/js/config.js"></script>
 <script src="./assets/js/ui.js"></script>
 <script src="./assets/js/chat.js"></script>

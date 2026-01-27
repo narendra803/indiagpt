@@ -9,17 +9,15 @@
 }
 
 .service-card {
-    padding: 2rem;
-    border-radius: 1.5rem;
     background: linear-gradient(
         to bottom right,
         rgba(255,153,51,0.1),
         rgba(244,211,94,0.1)
     );
+    padding: 2rem;
+    border-radius: 1.5rem;
     border: 1px solid rgba(255,153,51,0.2);
 }
-
-/* ================= CHAT UI ================= */
 
 /* Floating chat button */
 #chat-fab {
@@ -30,7 +28,7 @@
     height: 56px;
     border-radius: 50%;
     background: #0A2540;
-    color: #ffffff;
+    color: white;
     font-size: 22px;
     border: none;
     cursor: pointer;
@@ -38,14 +36,14 @@
     z-index: 1000;
 }
 
-/* Chat widget container */
+/* Chat widget */
 #chat-widget {
     position: fixed;
     bottom: 90px;
     right: 20px;
     width: 340px;
     height: 420px;
-    background: #ffffff;
+    background: white;
     border-radius: 14px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     display: none;
@@ -53,7 +51,6 @@
     z-index: 1000;
 }
 
-/* Chat header */
 .chat-header {
     background: #0A2540;
     color: white;
@@ -61,22 +58,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 14px 14px 0 0;
-    font-size: 14px; /* slightly smaller */
-    font-weight: 600;
 }
 
-/* Chat messages area */
 .chat-body {
     flex: 1;
     padding: 10px;
     overflow-y: auto;
     background: #f9fafb;
-    font-size: 13px;       /* 🔽 reduced chat font size */
-    line-height: 1.4;
+    font-size: 13px;
 }
 
-/* Chat input area */
 .chat-input {
     display: flex;
     gap: 6px;
@@ -89,7 +80,6 @@
     padding: 8px 12px;
     border-radius: 999px;
     border: 1px solid #d1d5db;
-    font-size: 13px;       /* 🔽 reduced input font */
 }
 
 .chat-input button {
@@ -98,6 +88,57 @@
     padding: 6px 14px;
     border-radius: 999px;
     border: none;
-    font-size: 13px;       /* 🔽 reduced button text */
+    font-weight: 600;
+}
+
+/* CONTACT MODAL */
+#contact-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+#contact-modal {
+    background: white;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.contact-header {
+    background: #0A2540;
+    color: white;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-form {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+.contact-form button {
+    background: #FF9933;
+    color: white;
+    padding: 10px;
+    border-radius: 999px;
+    border: none;
     font-weight: 600;
 }
