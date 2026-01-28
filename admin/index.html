@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IndiaGPT – Leads Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f9fafb;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background: #0A2540;
+            color: white;
+        }
+        tr:hover {
+            background: #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+
+<h1>IndiaGPT – Contact Leads</h1>
+
+<table id="leads">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+(async () => {
+    const token = prompt("Enter admin token:");
+    if (!token) return;
+
+    const res = await fetch("/api/admin/leads", {
+        headers: { "Authorization": "Bearer " + token }
+    });
+
+    if (!res.ok) {
+        alert("Unauthorized");
+        return;
+    }
+
+    const data = await res.json();
+    const tbody = document.querySelector("#leads tbody");
+
+    data.forEach(l => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${new Date(l.timestamp).toLocaleString()}</td>
+            <td>${l.name}</td>
+            <td>${l.email}</td>
+            <td>${l.phone}</td>
+            <td>${l.message}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+})();
+</script>
+
+</body>
+</html>
