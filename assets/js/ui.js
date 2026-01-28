@@ -13,53 +13,77 @@ document.addEventListener("DOMContentLoaded", () => {
     chatFab.addEventListener("click", window.toggleChat);
     closeChat.addEventListener("click", window.toggleChat);
 
-    /* ================= CONTACT MODAL ================= */
+    /* ================= CONTACT ================= */
     const overlay = document.getElementById("contact-overlay");
     const form = overlay.querySelector("form");
+    let widgetId = null;
 
     window.openContact = function () {
         overlay.style.display = "block";
+
+        if (widgetId === null && window.turnstile) {
+            widgetId = turnstile.render(
+                form.querySelector(".cf-turnstile"),
+                {
+                    sitekey: "0x4AAAAAACVFhDVtYjPernwR",
+                    size: "invisible"
+                }
+            );
+        }
     };
 
     window.closeContact = function () {
         overlay.style.display = "none";
         form.reset();
+        if (window.turnstile && widgetId !== null) {
+            turnstile.reset(widgetId);
+        }
     };
 
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            closeContact();
-        }
+    overlay.addEventListener("click", e => {
+        if (e.target === overlay) closeContact();
     });
 
     /* ================= FORM SUBMIT ================= */
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", e => {
         e.preventDefault();
 
-        const data = {
-            name: form.querySelector('input[type="text"]').value,
-            email: form.querySelector('input[type="email"]').value,
-            phone: form.querySelector('input[type="tel"]').value,
-            message: form.querySelector("textarea").value
-        };
-
-        try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
-
-            const result = await res.json();
-
-            if (result.success) {
-                alert("Thank you! We’ll contact you soon.");
-                closeContact();
-            } else {
-                alert(result.error || "Something went wrong.");
-            }
-        } catch {
-            alert("Server error. Please try again.");
+        if (!window.turnstile || widgetId === null) {
+            alert("Verification not ready. Please try again.");
+            return;
         }
+
+        turnstile.execute(widgetId, {
+            callback: async (token) => {
+
+                const payload = {
+                    name: form.querySelector('input[type="text"]').value.trim(),
+                    email: form.querySelector('input[type="email"]').value.trim(),
+                    phone: form.querySelector('input[type="tel"]').value.trim(),
+                    message: form.querySelector("textarea").value.trim(),
+                    token
+                };
+
+                try {
+                    const res = await fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await res.json();
+
+                    if (result.success) {
+                        alert("Thank you! We’ll contact you soon.");
+                        closeContact();
+                    } else {
+                        alert(result.error || "Submission failed.");
+                    }
+
+                } catch {
+                    alert("Server error. Please try again.");
+                }
+            }
+        });
     });
 });
