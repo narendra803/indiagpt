@@ -3,34 +3,15 @@ export async function onRequestPost(context) {
         const { request, env } = context;
         const body = await request.json();
 
-        const { name, email, phone, message, token } = body;
+        const { name, email, phone, message } = body;
 
-        if (!name || !email || !phone || !message || !token) {
+        if (!name || !email || !phone || !message) {
             return new Response(
                 JSON.stringify({ success: false, error: "Invalid submission." }),
                 { status: 400 }
             );
         }
 
-        /* ================= TURNSTILE VERIFY ================= */
-        const verifyRes = await fetch(
-            "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `secret=${env.TURNSTILE_SECRET}&response=${token}`
-            }
-        );
-
-        const verifyData = await verifyRes.json();
-        if (!verifyData.success) {
-            return new Response(
-                JSON.stringify({ success: false, error: "Bot detected." }),
-                { status: 403 }
-            );
-        }
-
-        /* ================= STORE LEAD ================= */
         const id = crypto.randomUUID();
         const record = {
             id,
@@ -41,9 +22,10 @@ export async function onRequestPost(context) {
             timestamp: new Date().toISOString()
         };
 
+        // Store in KV
         await env.CONTACT_LEADS.put(id, JSON.stringify(record));
 
-        /* ================= EMAIL NOTIFICATION ================= */
+        // Email notification
         const emailBody = `
 New contact lead received on IndiaGPT
 
@@ -61,17 +43,13 @@ Time: ${record.timestamp}
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                personalizations: [
-                    { to: [{ email: env.ADMIN_EMAIL }] }
-                ],
+                personalizations: [{ to: [{ email: env.ADMIN_EMAIL }] }],
                 from: {
                     email: "no-reply@indiagpt.in",
                     name: "IndiaGPT Leads"
                 },
                 subject: "New Contact Lead – IndiaGPT",
-                content: [
-                    { type: "text/plain", value: emailBody }
-                ]
+                content: [{ type: "text/plain", value: emailBody }]
             })
         });
 

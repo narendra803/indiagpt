@@ -27,9 +27,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/main.css">
-
-    <!-- Cloudflare Turnstile -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body class="font-poppins bg-gray-50 text-gray-900">
@@ -63,17 +60,18 @@
             <p class="text-2xl md:text-3xl mt-4 font-light">
                 AI & Digital Solutions for Small Businesses
             </p>
-            <p class="text-xl mt-6 max-w-lg opacity-90">
-                Simple, affordable websites, automation, and AI chatbots for growing businesses.
+            <p class="text-xl mt-6 max-w-lg leading-relaxed opacity-90">
+                छोटे बिज़नेस के लिए आसान डिजिटल और AI समाधान। Websites, automation, and AI chatbots within your budget..
             </p>
 
-            <div class="mt-10 flex gap-4">
+            <div class="mt-10 flex flex-wrap gap-4">
                 <button onclick="toggleChat()"
-                    class="bg-white text-navy px-8 py-4 rounded-full font-bold hover:shadow-xl">
+                    class="bg-white text-navy px-8 py-4 rounded-full text-lg font-bold hover:shadow-xl transition transform hover:scale-105">
                     Chat With Us →
                 </button>
+
                 <button onclick="openContact()"
-                    class="border-2 border-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-navy">
+                    class="border-2 border-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-navy transition">
                     Contact Us
                 </button>
             </div>
@@ -87,8 +85,67 @@
                 </p>
             </div>
         </div>
+
     </div>
 </section>
+
+<!-- SERVICES -->
+<section id="services" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold">Our Services</h2>
+            <p class="text-xl text-gray-600 mt-4">
+                Practical, affordable, and scalable digital solutions
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="service-card">
+                <div class="text-5xl mb-4">🌐</div>
+                <h3 class="text-2xl font-bold mb-3">Website Creation</h3>
+                <p class="text-gray-600">Professional business websites, landing pages, and portfolios.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="text-5xl mb-4">🤖</div>
+                <h3 class="text-2xl font-bold mb-3">AI Chatbots</h3>
+                <p class="text-gray-600">Smart chatbots for support, FAQs, and lead generation.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="text-5xl mb-4">⚙️</div>
+                <h3 class="text-2xl font-bold mb-3">Business Automation</h3>
+                <p class="text-gray-600">Automate workflows, reports,  notifications and processes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY INDIA GPT (CONTENT RESTORED) -->
+<section id="why" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-10">Why IndiaGPT?</h2>
+
+        <p class="text-xl max-w-3xl mx-auto leading-relaxed mb-6">
+            IndiaGPT focuses on solving real problems for small businesses.
+            We don’t sell complex technology — we build simple, reliable, and affordable
+            digital solutions that actually help businesses grow.
+        </p>
+
+        <p class="text-xl max-w-3xl mx-auto leading-relaxed text-gray-700">
+            IndiaGPT छोटे और मध्यम व्यवसायों की वास्तविक समस्याओं को समझता है।
+            हम जटिल टेक्नोलॉजी नहीं बेचते — बल्कि सरल, भरोसेमंद और किफायती
+            डिजिटल समाधान बनाते हैं जो व्यवसाय को आगे बढ़ाने में मदद करते हैं।
+        </p>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-navy text-white py-12 text-center">
+    <p class="text-2xl font-bold gradient-text">IndiaGPT</p>
+    <p class="opacity-80 mt-2">AI & Digital Solutions for Small Businesses</p>
+    <p class="text-sm opacity-70 mt-1">© 2026 IndiaGPT.in</p>
+</footer>
 
 <!-- CONTACT MODAL -->
 <div id="contact-overlay">
@@ -103,13 +160,6 @@
             <input type="email" placeholder="Email Address" required>
             <input type="tel" placeholder="Contact Number" required>
             <textarea placeholder="Your Message" rows="4" required></textarea>
-
-            <!-- Invisible Turnstile -->
-            <div class="cf-turnstile"
-                 data-sitekey="0x4AAAAAACVFhDVtYjPernwR"
-                 data-size="invisible">
-            </div>
-
             <button type="submit">Submit</button>
         </form>
     </div>
