@@ -22,7 +22,10 @@ export async function onRequestPost(context) {
             timestamp: new Date().toISOString()
         };
 
+        /* ================= STORE LEAD ================= */
         await env.CONTACT_LEADS.put(id, JSON.stringify(record));
+
+        /* ================= EMAIL ================= */
 
         const fromEmail =
             env.MAIL_FROM_EMAIL || "no-reply@cloudflareworkers.com";
@@ -30,9 +33,8 @@ export async function onRequestPost(context) {
         const replyToEmail =
             env.MAIL_REPLY_TO || email;
 
-        if (!env.ADMIN_EMAIL) {
-            console.error("❌ ADMIN_EMAIL secret missing");
-        }
+        const authDomain =
+            env.MAILCHANNELS_DOMAIN || "cloudflareworkers.com";
 
         const emailBody = `
 New contact lead received on IndiaGPT
@@ -51,7 +53,10 @@ Time: ${record.timestamp}
             "https://api.mailchannels.net/tx/v1/send",
             {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-MailChannels-Auth": authDomain
+                },
                 body: JSON.stringify({
                     personalizations: [
                         { to: [{ email: env.ADMIN_EMAIL }] }
@@ -71,12 +76,10 @@ Time: ${record.timestamp}
             }
         );
 
-        const mailText = await mailRes.text();
-
-        console.log("📧 MailChannels status:", mailRes.status);
-        console.log("📧 MailChannels response:", mailText);
-
         if (!mailRes.ok) {
+            const errText = await mailRes.text();
+            console.error("MailChannels rejected:", mailRes.status, errText);
+
             return new Response(
                 JSON.stringify({
                     success: false,
@@ -92,7 +95,7 @@ Time: ${record.timestamp}
         );
 
     } catch (err) {
-        console.error("❌ Contact API error:", err);
+        console.error("Contact API error:", err);
         return new Response(
             JSON.stringify({ success: false, error: "Server error" }),
             { status: 500 }
