@@ -22,19 +22,8 @@ export async function onRequestPost(context) {
             timestamp: new Date().toISOString()
         };
 
-        /* ================= STORE LEAD ================= */
+        // Store lead
         await env.CONTACT_LEADS.put(id, JSON.stringify(record));
-
-        /* ================= EMAIL ================= */
-
-        const fromEmail =
-            env.MAIL_FROM_EMAIL || "no-reply@cloudflareworkers.com";
-
-        const replyToEmail =
-            env.MAIL_REPLY_TO || email;
-
-        const authDomain =
-            env.MAILCHANNELS_DOMAIN || "cloudflareworkers.com";
 
         const emailBody = `
 New contact lead received on IndiaGPT
@@ -49,24 +38,24 @@ ${message}
 Time: ${record.timestamp}
         `.trim();
 
-        const mailRes = await fetch(
+        const res = await fetch(
             "https://api.mailchannels.net/tx/v1/send",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-MailChannels-Auth": authDomain
+                    "X-MailChannels-Auth": "cloudflareworkers.com"
                 },
                 body: JSON.stringify({
                     personalizations: [
                         { to: [{ email: env.ADMIN_EMAIL }] }
                     ],
                     from: {
-                        email: fromEmail,
+                        email: "no-reply@cloudflareworkers.com",
                         name: "IndiaGPT Leads"
                     },
                     reply_to: {
-                        email: replyToEmail
+                        email
                     },
                     subject: "New Contact Lead – IndiaGPT",
                     content: [
@@ -76,15 +65,11 @@ Time: ${record.timestamp}
             }
         );
 
-        if (!mailRes.ok) {
-            const errText = await mailRes.text();
-            console.error("MailChannels rejected:", mailRes.status, errText);
-
+        if (!res.ok) {
+            const t = await res.text();
+            console.error("MailChannels error:", res.status, t);
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: "Email service rejected request"
-                }),
+                JSON.stringify({ success: false, error: "Email service rejected request" }),
                 { status: 500 }
             );
         }
