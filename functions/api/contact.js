@@ -22,10 +22,17 @@ export async function onRequestPost(context) {
             timestamp: new Date().toISOString()
         };
 
-        // Store in KV
+        /* ================= STORE LEAD ================= */
         await env.CONTACT_LEADS.put(id, JSON.stringify(record));
 
-        // Email notification
+        /* ================= EMAIL NOTIFICATION ================= */
+
+        const fromEmail =
+            env.MAIL_FROM_EMAIL || "no-reply@cloudflareworkers.com";
+
+        const replyToEmail =
+            env.MAIL_REPLY_TO || email; // fallback to user email
+
         const emailBody = `
 New contact lead received on IndiaGPT
 
@@ -43,13 +50,20 @@ Time: ${record.timestamp}
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                personalizations: [{ to: [{ email: env.ADMIN_EMAIL }] }],
+                personalizations: [
+                    { to: [{ email: env.ADMIN_EMAIL }] }
+                ],
                 from: {
-                    email: "no-reply@indiagpt.in",
+                    email: fromEmail,
                     name: "IndiaGPT Leads"
                 },
+                reply_to: {
+                    email: replyToEmail
+                },
                 subject: "New Contact Lead – IndiaGPT",
-                content: [{ type: "text/plain", value: emailBody }]
+                content: [
+                    { type: "text/plain", value: emailBody }
+                ]
             })
         });
 
