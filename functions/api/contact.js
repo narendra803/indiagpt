@@ -12,6 +12,8 @@ export async function onRequestPost(context) {
             );
         }
 
+        /* ================= STORE LEAD ================= */
+
         const id = crypto.randomUUID();
         const record = {
             id,
@@ -22,21 +24,50 @@ export async function onRequestPost(context) {
             timestamp: new Date().toISOString()
         };
 
-        /* Store lead */
         await env.CONTACT_LEADS.put(id, JSON.stringify(record));
 
-        /* Call Worker for email */
-        await fetch(env.MAILER_WORKER_URL, {
+        /* ================= SEND EMAIL (RESEND) ================= */
+
+        const emailBody = `
+New contact lead received on IndiaGPT
+
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+
+Message:
+${message}
+
+Time: ${record.timestamp}
+        `.trim();
+
+        const resendRes = await fetch("https://api.resend.com/emails", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
-                name,
-                email,
-                phone,
-                message,
-                adminEmail: env.ADMIN_EMAIL
+                from: `IndiaGPT Leads <${env.MAIL_FROM_EMAIL}>`,
+                to: [env.ADMIN_EMAIL],
+                reply_to: email,
+                subject: "New Contact Lead – IndiaGPT",
+                text: emailBody
             })
         });
+
+        if (!resendRes.ok) {
+            const err = await resendRes.text();
+            console.error("Resend error:", err);
+
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: "Email sending failed"
+                }),
+                { status: 500 }
+            );
+        }
 
         return new Response(
             JSON.stringify({ success: true }),
@@ -44,7 +75,7 @@ export async function onRequestPost(context) {
         );
 
     } catch (err) {
-        console.error("Contact error:", err);
+        console.error("Contact API error:", err);
         return new Response(
             JSON.stringify({ success: false, error: "Server error" }),
             { status: 500 }
