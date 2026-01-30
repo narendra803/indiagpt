@@ -22,57 +22,21 @@ export async function onRequestPost(context) {
             timestamp: new Date().toISOString()
         };
 
-        // Store lead
+        /* Store lead */
         await env.CONTACT_LEADS.put(id, JSON.stringify(record));
 
-        const emailBody = `
-New contact lead received on IndiaGPT
-
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
-
-Message:
-${message}
-
-Time: ${record.timestamp}
-        `.trim();
-
-        const res = await fetch(
-            "https://api.mailchannels.net/tx/v1/send",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-MailChannels-Auth": "cloudflareworkers.com"
-                },
-                body: JSON.stringify({
-                    personalizations: [
-                        { to: [{ email: env.ADMIN_EMAIL }] }
-                    ],
-                    from: {
-                        email: "no-reply@cloudflareworkers.com",
-                        name: "IndiaGPT Leads"
-                    },
-                    reply_to: {
-                        email
-                    },
-                    subject: "New Contact Lead – IndiaGPT",
-                    content: [
-                        { type: "text/plain", value: emailBody }
-                    ]
-                })
-            }
-        );
-
-        if (!res.ok) {
-            const t = await res.text();
-            console.error("MailChannels error:", res.status, t);
-            return new Response(
-                JSON.stringify({ success: false, error: "Email service rejected request" }),
-                { status: 500 }
-            );
-        }
+        /* Call Worker for email */
+        await fetch(env.MAILER_WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name,
+                email,
+                phone,
+                message,
+                adminEmail: env.ADMIN_EMAIL
+            })
+        });
 
         return new Response(
             JSON.stringify({ success: true }),
@@ -80,7 +44,7 @@ Time: ${record.timestamp}
         );
 
     } catch (err) {
-        console.error("Contact API error:", err);
+        console.error("Contact error:", err);
         return new Response(
             JSON.stringify({ success: false, error: "Server error" }),
             { status: 500 }
