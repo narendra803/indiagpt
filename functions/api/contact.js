@@ -7,7 +7,26 @@ export async function onRequestPost(context) {
 
         if (!name || !email || !phone || !message) {
             return new Response(
-                JSON.stringify({ success: false, error: "Invalid submission." }),
+                JSON.stringify({ success: false, error: "All fields are required." }),
+                { status: 400 }
+            );
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Invalid email address." }),
+                { status: 400 }
+            );
+        }
+
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (!phoneRegex.test(phone)) {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: "Invalid mobile number. Use 10-digit Indian number."
+                }),
                 { status: 400 }
             );
         }
@@ -57,14 +76,9 @@ Time: ${record.timestamp}
         });
 
         if (!resendRes.ok) {
-            const err = await resendRes.text();
-            console.error("Resend error:", err);
-
+            console.error("Resend error:", await resendRes.text());
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: "Email sending failed"
-                }),
+                JSON.stringify({ success: false, error: "Email sending failed" }),
                 { status: 500 }
             );
         }

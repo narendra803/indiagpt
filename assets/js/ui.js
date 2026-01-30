@@ -1,18 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* ================= CHAT ================= */
-    const chatWidget = document.getElementById("chat-widget");
-    const chatFab = document.getElementById("chat-fab");
-    const closeChat = document.getElementById("close-chat");
-
-    window.toggleChat = function () {
-        chatWidget.style.display =
-            chatWidget.style.display === "flex" ? "none" : "flex";
-    };
-
-    chatFab.addEventListener("click", window.toggleChat);
-    closeChat.addEventListener("click", window.toggleChat);
-
     /* ================= CONTACT MODAL ================= */
     const overlay = document.getElementById("contact-overlay");
     const form = overlay.querySelector("form");
@@ -27,27 +14,49 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            closeContact();
-        }
+        if (e.target === overlay) closeContact();
     });
 
+    /* ================= VALIDATION HELPERS ================= */
+
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function isValidIndianMobile(phone) {
+        return /^[6-9]\d{9}$/.test(phone);
+    }
+
     /* ================= FORM SUBMIT ================= */
+
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const payload = {
-            name: form.querySelector('input[type="text"]').value.trim(),
-            email: form.querySelector('input[type="email"]').value.trim(),
-            phone: form.querySelector('input[type="tel"]').value.trim(),
-            message: form.querySelector("textarea").value.trim()
-        };
+        const name = form.querySelector('input[type="text"]').value.trim();
+        const email = form.querySelector('input[type="email"]').value.trim();
+        const phone = form.querySelector('input[type="tel"]').value.trim();
+        const message = form.querySelector("textarea").value.trim();
+
+        if (!name || !email || !phone || !message) {
+            alert("All fields are required.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        if (!isValidIndianMobile(phone)) {
+            alert("Please enter a valid 10-digit Indian mobile number.");
+            return;
+        }
 
         try {
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ name, email, phone, message })
             });
 
             const result = await res.json();
