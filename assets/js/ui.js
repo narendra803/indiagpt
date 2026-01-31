@@ -1,5 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    /* ================= CHAT ================= */
+    const chatWidget = document.getElementById("chat-widget");
+    const chatFab = document.getElementById("chat-fab");
+    const closeChat = document.getElementById("close-chat");
+
+    window.toggleChat = function () {
+        chatWidget.style.display =
+            chatWidget.style.display === "flex" ? "none" : "flex";
+    };
+
+    chatFab.addEventListener("click", window.toggleChat);
+    closeChat.addEventListener("click", window.toggleChat);
+
     /* ================= CONTACT MODAL ================= */
     const overlay = document.getElementById("contact-overlay");
     const form = overlay.querySelector("form");
@@ -17,14 +30,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) closeContact();
     });
 
-    /* ================= VALIDATION HELPERS ================= */
+    /* ================= SIMPLE VALIDATION HELPERS ================= */
 
     function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!email.includes("@")) return false;
+        const parts = email.split("@");
+        if (parts.length !== 2) return false;
+        if (!parts[1].includes(".")) return false;
+        return true;
     }
 
-    function isValidIndianMobile(phone) {
-        return /^[6-9]\d{9}$/.test(phone);
+    function isValidMobile(phone) {
+        if (!/^\d+$/.test(phone)) return false;
+        if (phone.length !== 10) return false;
+        return true;
     }
 
     /* ================= FORM SUBMIT ================= */
@@ -42,13 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // ✅ SIMPLE, SAFE CHECKS ONLY
         if (!isValidEmail(email)) {
-            alert("Please enter a valid email address.");
+            alert("Please enter a valid email (example: name@gmail.com)");
             return;
         }
 
-        if (!isValidIndianMobile(phone)) {
-            alert("Please enter a valid 10-digit Indian mobile number.");
+        if (!isValidMobile(phone)) {
+            alert("Please enter a valid 10-digit mobile number.");
             return;
         }
 
