@@ -17,6 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("contact-overlay");
     const form = overlay.querySelector("form");
 
+    const nameInput = form.querySelector('input[type="text"]');
+    const emailInput = form.querySelector('input[type="email"]');
+    const phoneInput = form.querySelector('input[type="tel"]');
+    const messageInput = form.querySelector("textarea");
+
     window.openContact = function () {
         overlay.style.display = "block";
     };
@@ -30,6 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) closeContact();
     });
 
+    /* ================= MOBILE: DIGITS ONLY ================= */
+
+    phoneInput.addEventListener("input", () => {
+        // Remove any non-digit characters
+        phoneInput.value = phoneInput.value.replace(/\D/g, "");
+    });
+
     /* ================= SIMPLE VALIDATION HELPERS ================= */
 
     function isValidEmail(email) {
@@ -41,9 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function isValidMobile(phone) {
-        if (!/^\d+$/.test(phone)) return false;
-        if (phone.length !== 10) return false;
-        return true;
+        return phone.length === 10;
     }
 
     /* ================= FORM SUBMIT ================= */
@@ -51,17 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const name = form.querySelector('input[type="text"]').value.trim();
-        const email = form.querySelector('input[type="email"]').value.trim();
-        const phone = form.querySelector('input[type="tel"]').value.trim();
-        const message = form.querySelector("textarea").value.trim();
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const message = messageInput.value.trim();
 
         if (!name || !email || !phone || !message) {
             alert("All fields are required.");
             return;
         }
 
-        // ✅ SIMPLE, SAFE CHECKS ONLY
         if (!isValidEmail(email)) {
             alert("Please enter a valid email (example: name@gmail.com)");
             return;
