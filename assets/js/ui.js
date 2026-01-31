@@ -5,22 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatFab = document.getElementById("chat-fab");
     const closeChat = document.getElementById("close-chat");
 
-    window.toggleChat = function () {
-        chatWidget.style.display =
-            chatWidget.style.display === "flex" ? "none" : "flex";
-    };
+    if (chatFab && chatWidget && closeChat) {
+        window.toggleChat = function () {
+            chatWidget.style.display =
+                chatWidget.style.display === "flex" ? "none" : "flex";
+        };
 
-    chatFab.addEventListener("click", window.toggleChat);
-    closeChat.addEventListener("click", window.toggleChat);
+        chatFab.addEventListener("click", window.toggleChat);
+        closeChat.addEventListener("click", window.toggleChat);
+    }
 
     /* ================= CONTACT MODAL ================= */
     const overlay = document.getElementById("contact-overlay");
-    const form = overlay.querySelector("form");
+    const form = overlay ? overlay.querySelector("form") : null;
 
-    const nameInput = form.querySelector('input[type="text"]');
-    const emailInput = form.querySelector('input[type="email"]');
-    const phoneInput = form.querySelector('input[type="tel"]');
-    const messageInput = form.querySelector("textarea");
+    if (!overlay || !form) return; // ⛔ hard stop if contact UI not present
 
     window.openContact = function () {
         overlay.style.display = "block";
@@ -35,25 +34,33 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) closeContact();
     });
 
-    /* ================= MOBILE: DIGITS ONLY ================= */
+    const nameInput = form.querySelector('input[type="text"]');
+    const emailInput = form.querySelector('input[type="email"]');
+    const phoneInput = form.querySelector('input[type="tel"]');
+    const messageInput = form.querySelector("textarea");
 
-    phoneInput.addEventListener("input", () => {
-        // Remove any non-digit characters
-        phoneInput.value = phoneInput.value.replace(/\D/g, "");
-    });
+    /* ================= MOBILE: DIGITS ONLY (SAFE) ================= */
 
-    /* ================= SIMPLE VALIDATION HELPERS ================= */
+    if (phoneInput) {
+        phoneInput.addEventListener("input", () => {
+            const cleaned = phoneInput.value.replace(/[^0-9]/g, "");
+            if (phoneInput.value !== cleaned) {
+                phoneInput.value = cleaned;
+            }
+        });
+    }
+
+    /* ================= SIMPLE VALIDATION ================= */
 
     function isValidEmail(email) {
-        if (!email.includes("@")) return false;
-        const parts = email.split("@");
-        if (parts.length !== 2) return false;
-        if (!parts[1].includes(".")) return false;
-        return true;
+        if (!email) return false;
+        const at = email.indexOf("@");
+        const dot = email.lastIndexOf(".");
+        return at > 0 && dot > at + 1 && dot < email.length - 1;
     }
 
     function isValidMobile(phone) {
-        return phone.length === 10;
+        return phone && phone.length === 10;
     }
 
     /* ================= FORM SUBMIT ================= */
@@ -61,10 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        const phone = phoneInput.value.trim();
-        const message = messageInput.value.trim();
+        const name = nameInput ? nameInput.value.trim() : "";
+        const email = emailInput ? emailInput.value.trim() : "";
+        const phone = phoneInput ? phoneInput.value.trim() : "";
+        const message = messageInput ? messageInput.value.trim() : "";
 
         if (!name || !email || !phone || !message) {
             alert("All fields are required.");
