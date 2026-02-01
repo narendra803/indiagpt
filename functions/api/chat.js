@@ -11,23 +11,16 @@ export async function onRequestPost(context) {
             );
         }
 
-        const userMessage = userMessageRaw.toLowerCase();
-
-       
-               
-            }
-        }
-
         /**
          * ==========================================
-         * 3️⃣ OPTIMIZED SYSTEM PROMPT
+         * 1️⃣ OPTIMIZED SYSTEM PROMPT
          * ==========================================
          */
         const systemPrompt = `
 You are IndiaGPT Support Assistant.
 
 RULES (STRICT):
--Keep your answer short.
+- Keep your answer short.
 - You are NOT a general AI.
 - Answer ONLY about IndiaGPT services:
   • Website creation
@@ -42,7 +35,7 @@ Professional, friendly, and concise.
 
         /**
          * ==========================================
-         * 4️⃣ GROK API CALL (PAID, CONTROLLED)
+         * 2️⃣ GROK API CALL (PAID, CONTROLLED)
          * ==========================================
          */
         const response = await fetch("https://api.x.ai/v1/chat/completions", {
