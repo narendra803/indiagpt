@@ -1,13 +1,46 @@
+import { enforceRateLimit, parseJsonWithLimit } from "./utils.js";
+
+const MAX_PAYLOAD_BYTES = 6 * 1024;
+const MAX_MESSAGE_LENGTH = 500;
+
 export async function onRequestPost(context) {
     try {
         const { request, env } = context;
-        const body = await request.json();
+        const rateLimit = await enforceRateLimit({
+            request,
+            env,
+            keyPrefix: "chat",
+            limit: 30,
+            windowSeconds: 300
+        });
+
+        if (!rateLimit.allowed) {
+            return rateLimit.response;
+        }
+
+        const { data, error } = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
+        if (error) {
+            const status = error === "Payload too large." ? 413 : 400;
+            return new Response(
+                JSON.stringify({ reply: error }),
+                { status, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        const body = data || {};
         const userMessageRaw = (body.message || "").trim();
 
         if (!userMessageRaw) {
             return new Response(
                 JSON.stringify({ reply: "Please enter a message." }),
-                { status: 400 }
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        if (userMessageRaw.length > MAX_MESSAGE_LENGTH) {
+            return new Response(
+                JSON.stringify({ reply: "Message is too long." }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 

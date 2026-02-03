@@ -53,11 +53,8 @@
 
 <script>
 (async () => {
-    const token = prompt("Enter admin token:");
-    if (!token) return;
-
     const res = await fetch("/api/admin/leads", {
-        headers: { "Authorization": "Bearer " + token }
+        credentials: "same-origin"
     });
 
     if (!res.ok) {
@@ -70,13 +67,19 @@
 
     data.forEach(l => {
         const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${new Date(l.timestamp).toLocaleString()}</td>
-            <td>${l.name}</td>
-            <td>${l.email}</td>
-            <td>${l.phone}</td>
-            <td>${l.message}</td>
-        `;
+        const cells = [
+            new Date(l.timestamp).toLocaleString(),
+            l.name,
+            l.email,
+            l.phone,
+            l.message
+        ];
+
+        cells.forEach(value => {
+            const td = document.createElement("td");
+            td.textContent = value || "";
+            tr.appendChild(td);
+        });
         tbody.appendChild(tr);
     });
 })();
