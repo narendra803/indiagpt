@@ -2,6 +2,11 @@ import { enforceRateLimit, parseJsonWithLimit } from "./utils.js";
 
 const MAX_PAYLOAD_BYTES = 6 * 1024;
 const MAX_MESSAGE_LENGTH = 500;
+const MAX_WORDS = 100;
+
+function countWords(text) {
+    return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
 
 export async function onRequestPost(context) {
     try {
@@ -41,6 +46,13 @@ export async function onRequestPost(context) {
         if (userMessageRaw.length > MAX_MESSAGE_LENGTH) {
             return new Response(
                 JSON.stringify({ reply: "Message is too long." }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        if (countWords(userMessageRaw) > MAX_WORDS) {
+            return new Response(
+                JSON.stringify({ reply: `Please keep your message under ${MAX_WORDS} words.` }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }

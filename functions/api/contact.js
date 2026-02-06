@@ -5,6 +5,11 @@ const MAX_NAME_LENGTH = 200;
 const MAX_EMAIL_LENGTH = 200;
 const MAX_PHONE_LENGTH = 20;
 const MAX_MESSAGE_LENGTH = 2000;
+const MAX_MESSAGE_WORDS = 500;
+
+function countWords(text) {
+    return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
 
 export async function onRequestPost(context) {
     try {
@@ -52,6 +57,16 @@ export async function onRequestPost(context) {
         ) {
             return new Response(
                 JSON.stringify({ success: false, error: "Input exceeds allowed length." }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        if (countWords(message) > MAX_MESSAGE_WORDS) {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: `Message exceeds ${MAX_MESSAGE_WORDS} words.`
+                }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
