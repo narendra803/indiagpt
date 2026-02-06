@@ -1,7 +1,14 @@
+// Chat UI element references for sending and rendering messages.
 const messagesDiv = document.getElementById("chat-messages");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 
+// Warn if the chat UI is not present (prevents runtime errors).
+if (!messagesDiv || !userInput || !sendBtn) {
+    console.warn("Chat UI is missing required elements.");
+}
+
+// Renders a single message bubble in the chat transcript.
 function addMessage(text, isUser = false) {
     const row = document.createElement("div");
     row.style.display = "flex";
@@ -21,9 +28,14 @@ function addMessage(text, isUser = false) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-addMessage(APP_CONFIG.welcomeMessage);
+// Seed the chat with a welcome message when ready.
+if (messagesDiv && userInput && sendBtn) {
+    addMessage(APP_CONFIG.welcomeMessage);
+}
 
+// Sends the user's message to the backend and renders the reply.
 async function sendMessage() {
+    if (!messagesDiv || !userInput || !sendBtn) return;
     const text = userInput.value.trim();
     if (!text) return;
 
@@ -47,8 +59,13 @@ async function sendMessage() {
     sendBtn.disabled = false;
 }
 
-sendBtn.onclick = sendMessage;
-userInput.oninput = () => sendBtn.disabled = !userInput.value.trim();
-userInput.onkeypress = e => {
-    if (e.key === "Enter") sendMessage();
-};
+// Bind UI events once all elements exist.
+if (messagesDiv && userInput && sendBtn) {
+    sendBtn.addEventListener("click", sendMessage);
+    userInput.addEventListener("input", () => {
+        sendBtn.disabled = !userInput.value.trim();
+    });
+    userInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") sendMessage();
+    });
+}

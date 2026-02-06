@@ -6,7 +6,24 @@
 
     <title>IndiaGPT - AI & Digital Solutions for Small Businesses</title>
 
+    <!-- Primary SEO -->
     <meta name="description" content="IndiaGPT helps small businesses with websites, AI chatbots, automation, data analytics, and digital transformation solutions tailored for India." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://indiagpt.in/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="IndiaGPT - AI & Digital Solutions for Small Businesses" />
+    <meta property="og:description" content="Affordable websites, AI chatbots, and automation for small businesses in India." />
+    <meta property="og:url" content="https://indiagpt.in/" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="IndiaGPT - AI & Digital Solutions for Small Businesses" />
+    <meta name="twitter:description" content="Affordable websites, AI chatbots, and automation for small businesses in India." />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#0A2540" />
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,6 +47,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/main.css">
+<!-- Structured data: Organization for rich results -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,7 +56,7 @@
   "url": "https://indiagpt.in",
   "logo": "https://indiagpt.in/favicon.ico",
   "description": "IndiaGPT provides AI-powered digital solutions for small businesses including website development, AI chatbots, workflow automation, data analytics, and digital transformation services.",
-  "foundingDate": "2026",
+  "foundingDate": "2024",
   "sameAs": [],
   "contactPoint": {
     "@type": "ContactPoint",
@@ -54,7 +72,7 @@
 
 <body class="font-poppins bg-gray-50 text-gray-900">
 
-<!-- NAVBAR -->
+<!-- NAVBAR: primary navigation and CTA -->
 <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-md z-40">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <div class="text-2xl font-bold gradient-text">IndiaGPT</div>
@@ -72,7 +90,7 @@
     </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO: core value proposition -->
 <section class="hero-bg min-h-screen flex items-center text-white pt-20">
     <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
@@ -112,7 +130,7 @@
     </div>
 </section>
 
-<!-- SERVICES -->
+<!-- SERVICES: offerings summary -->
 <section id="services" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
@@ -144,7 +162,7 @@
     </div>
 </section>
 
-<!-- WHY INDIA GPT (CONTENT RESTORED) -->
+<!-- WHY INDIA GPT: credibility and positioning -->
 <section id="why" class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-10">Why IndiaGPT?</h2>
@@ -163,38 +181,40 @@
     </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER: brand and copyright -->
 <footer class="bg-navy text-white py-12 text-center">
     <p class="text-2xl font-bold gradient-text">IndiaGPT</p>
     <p class="opacity-80 mt-2">AI & Digital Solutions for Small Businesses</p>
     <p class="text-sm opacity-70 mt-1">© 2026 IndiaGPT.in</p>
 </footer>
 
-<!-- CONTACT MODAL -->
-<div id="contact-overlay">
-    <div id="contact-modal">
-        <div class="contact-header">
-            <h3>Contact IndiaGPT</h3>
-            <button onclick="closeContact()">✕</button>
-        </div>
+<!-- CONTACT MODAL: lead capture -->
+<div id="contact">
+    <div id="contact-overlay">
+        <div id="contact-modal">
+            <div class="contact-header">
+                <h3>Contact IndiaGPT</h3>
+                <button type="button" onclick="closeContact()" aria-label="Close contact form">✕</button>
+            </div>
 
-        <form class="contact-form">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <input type="tel" placeholder="Contact Number" required>
-            <textarea placeholder="Your Message" rows="4" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
+            <form class="contact-form">
+                <input type="text" name="name" placeholder="Your Name" autocomplete="name" required>
+                <input type="email" name="email" placeholder="Email Address" autocomplete="email" required>
+                <input type="tel" name="phone" placeholder="Contact Number" autocomplete="tel" inputmode="numeric" maxlength="20" required>
+                <textarea name="message" placeholder="Your Message" rows="4" maxlength="2000" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 </div>
 
 <!-- CHAT -->
-<button id="chat-fab">💬</button>
+<button id="chat-fab" aria-label="Open chat">💬</button>
 
 <div id="chat-widget">
     <div class="chat-header">
         <span>IndiaGPT Support</span>
-        <button id="close-chat">✕</button>
+        <button id="close-chat" type="button" aria-label="Close chat">✕</button>
     </div>
     <div id="chat-messages" class="chat-body"></div>
     <div class="chat-input">
