@@ -99,9 +99,10 @@ Professional, friendly, and concise.
             );
         }
 
-        const data = await response.json();
+        // Parse model response and fall back to a helpful default reply.
+        const grokData = await response.json();
         const reply =
-            data?.choices?.[0]?.message?.content ||
+            grokData?.choices?.[0]?.message?.content ||
             "I can help you with IndiaGPT services like websites, AI chatbots, and automation.";
 
         return new Response(
