@@ -1,14 +1,58 @@
+import { enforceRateLimit, parseJsonWithLimit } from "./utils.js";
+
+const MAX_PAYLOAD_BYTES = 10 * 1024;
+const MAX_NAME_LENGTH = 200;
+const MAX_EMAIL_LENGTH = 200;
+const MAX_PHONE_LENGTH = 20;
+const MAX_MESSAGE_LENGTH = 2000;
+
 export async function onRequestPost(context) {
     try {
         const { request, env } = context;
-        const body = await request.json();
+        const rateLimit = await enforceRateLimit({
+            request,
+            env,
+            keyPrefix: "contact",
+            limit: 10,
+            windowSeconds: 600
+        });
 
-        const { name, email, phone, message } = body;
+        if (!rateLimit.allowed) {
+            return rateLimit.response;
+        }
+
+        const { data, error } = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
+        if (error) {
+            const status = error === "Payload too large." ? 413 : 400;
+            return new Response(
+                JSON.stringify({ success: false, error }),
+                { status, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        const body = data || {};
+
+        const name = (body.name || "").trim();
+        const email = (body.email || "").trim();
+        const phone = (body.phone || "").trim();
+        const message = (body.message || "").trim();
 
         if (!name || !email || !phone || !message) {
             return new Response(
                 JSON.stringify({ success: false, error: "Invalid submission." }),
-                { status: 400 }
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
+        if (
+            name.length > MAX_NAME_LENGTH ||
+            email.length > MAX_EMAIL_LENGTH ||
+            phone.length > MAX_PHONE_LENGTH ||
+            message.length > MAX_MESSAGE_LENGTH
+        ) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Input exceeds allowed length." }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 

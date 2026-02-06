@@ -1,8 +1,10 @@
+import { isAuthorizedAdmin } from "../utils.js";
+
 export async function onRequestGet(context) {
     const { request, env } = context;
 
-    const auth = request.headers.get("Authorization");
-    if (auth !== `Bearer ${env.ADMIN_TOKEN}`) {
+    const auth = request.headers.get("Authorization") || "";
+    if (!isAuthorizedAdmin(auth, env.ADMIN_TOKEN)) {
         return new Response("Unauthorized", { status: 401 });
     }
 
