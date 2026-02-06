@@ -202,6 +202,9 @@
                 <input type="email" name="email" placeholder="Email Address" autocomplete="email" required>
                 <input type="tel" name="phone" placeholder="Contact Number" autocomplete="tel" inputmode="numeric" maxlength="20" required>
                 <textarea name="message" placeholder="Your Message" rows="4" maxlength="2000" required></textarea>
+                <div class="input-helper">
+                    <span id="contact-word-count">0/500 words</span>
+                </div>
                 <button type="submit">Submit</button>
             </form>
         </div>
@@ -220,6 +223,9 @@
     <div class="chat-input">
         <input id="user-input" placeholder="Ask about our services…" />
         <button id="send-btn" disabled>Send</button>
+    </div>
+    <div class="chat-meta">
+        <span id="chat-word-count">0/100 words</span>
     </div>
 </div>
 

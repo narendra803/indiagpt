@@ -2,10 +2,24 @@
 const messagesDiv = document.getElementById("chat-messages");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
+const wordCountEl = document.getElementById("chat-word-count");
+const MAX_WORDS = 100;
 
 // Warn if the chat UI is not present (prevents runtime errors).
-if (!messagesDiv || !userInput || !sendBtn) {
+if (!messagesDiv || !userInput || !sendBtn || !wordCountEl) {
     console.warn("Chat UI is missing required elements.");
+}
+
+function countWords(text) {
+    return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
+
+function updateWordCount() {
+    if (!wordCountEl || !userInput || !sendBtn) return;
+    const words = countWords(userInput.value);
+    wordCountEl.textContent = `${words}/${MAX_WORDS} words`;
+    wordCountEl.style.color = words > MAX_WORDS ? "#dc2626" : "#6b7280";
+    sendBtn.disabled = words === 0 || words > MAX_WORDS;
 }
 
 // Renders a single message bubble in the chat transcript.
@@ -29,18 +43,24 @@ function addMessage(text, isUser = false) {
 }
 
 // Seed the chat with a welcome message when ready.
-if (messagesDiv && userInput && sendBtn) {
+if (messagesDiv && userInput && sendBtn && wordCountEl) {
     addMessage(APP_CONFIG.welcomeMessage);
+    updateWordCount();
 }
 
 // Sends the user's message to the backend and renders the reply.
 async function sendMessage() {
-    if (!messagesDiv || !userInput || !sendBtn) return;
+    if (!messagesDiv || !userInput || !sendBtn || !wordCountEl) return;
     const text = userInput.value.trim();
     if (!text) return;
+    if (countWords(text) > MAX_WORDS) {
+        addMessage(`Please keep your message under ${MAX_WORDS} words.`);
+        return;
+    }
 
     addMessage(text, true);
     userInput.value = "";
+    updateWordCount();
     sendBtn.disabled = true;
 
     try {
@@ -56,14 +76,14 @@ async function sendMessage() {
         addMessage("Sorry, something went wrong.");
     }
 
-    sendBtn.disabled = false;
+    updateWordCount();
 }
 
 // Bind UI events once all elements exist.
-if (messagesDiv && userInput && sendBtn) {
+if (messagesDiv && userInput && sendBtn && wordCountEl) {
     sendBtn.addEventListener("click", sendMessage);
     userInput.addEventListener("input", () => {
-        sendBtn.disabled = !userInput.value.trim();
+        updateWordCount();
     });
     userInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") sendMessage();

@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.closeContact = function () {
         overlay.style.display = "none";
         form.reset();
+        updateWordCount();
     };
 
     overlay.addEventListener("click", (e) => {
@@ -41,6 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailInput = form.querySelector('input[type="email"]');
     const phoneInput = form.querySelector('input[type="tel"]');
     const messageInput = form.querySelector("textarea");
+    const wordCountEl = document.getElementById("contact-word-count");
+    const MAX_WORDS = 500;
 
     /* ================= MOBILE: DIGITS ONLY (SAFE) ================= */
     // Ensures only digits in the phone field for cleaner submissions.
@@ -52,6 +55,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 phoneInput.value = cleaned;
             }
         });
+    }
+
+    function countWords(text) {
+        return text.trim() ? text.trim().split(/\s+/).length : 0;
+    }
+
+    function updateWordCount() {
+        if (!messageInput || !wordCountEl) return;
+        const words = countWords(messageInput.value);
+        wordCountEl.textContent = `${words}/${MAX_WORDS} words`;
+        wordCountEl.style.color = words > MAX_WORDS ? "#dc2626" : "#6b7280";
+    }
+
+    if (messageInput) {
+        messageInput.addEventListener("input", updateWordCount);
+        updateWordCount();
     }
 
     /* ================= SIMPLE VALIDATION ================= */
@@ -91,6 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!isValidMobile(phone)) {
             alert("Please enter a valid 10-digit mobile number.");
+            return;
+        }
+
+        if (countWords(message) > MAX_WORDS) {
+            alert(`Please keep your message under ${MAX_WORDS} words.`);
             return;
         }
 
