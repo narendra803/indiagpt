@@ -20,7 +20,7 @@ export async function parseJsonWithLimit(request, maxBytes = DEFAULT_MAX_PAYLOAD
     }
 
     try {
-        return { data: JSON.parse(bodyText) };
+        return { payload: JSON.parse(bodyText) };
     } catch (error) {
         return { error: "Invalid JSON payload." };
     }

@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Bootstraps UI interactions after the DOM is ready.
 
     /* ================= CHAT ================= */
+    // Toggles the floating chat widget.
     const chatWidget = document.getElementById("chat-widget");
     const chatFab = document.getElementById("chat-fab");
     const closeChat = document.getElementById("close-chat");
@@ -16,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ================= CONTACT MODAL ================= */
+    // Manages the contact modal open/close state.
     const overlay = document.getElementById("contact-overlay");
     const form = overlay ? overlay.querySelector("form") : null;
 
@@ -40,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const messageInput = form.querySelector("textarea");
 
     /* ================= MOBILE: DIGITS ONLY (SAFE) ================= */
+    // Ensures only digits in the phone field for cleaner submissions.
 
     if (phoneInput) {
         phoneInput.addEventListener("input", () => {
@@ -51,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ================= SIMPLE VALIDATION ================= */
+    // Minimal client-side checks before sending the request.
 
     function isValidEmail(email) {
         if (!email) return false;
@@ -64,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ================= FORM SUBMIT ================= */
+    // Sends the contact request to the backend API.
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
