@@ -18,15 +18,16 @@ export async function onRequestPost(context) {
             return rateLimit.response;
         }
 
-        const { data: requestData, error } = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
-        if (error) {
-            const status = error === "Payload too large." ? 413 : 400;
+        const payloadResult = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
+        if (payloadResult.error) {
+            const status = payloadResult.error === "Payload too large." ? 413 : 400;
             return new Response(
-                JSON.stringify({ reply: error }),
+                JSON.stringify({ reply: payloadResult.error }),
                 { status, headers: { "Content-Type": "application/json" } }
             );
         }
 
+        const requestData = payloadResult.data || {};
         const body = requestData || {};
         const userMessageRaw = (body.message || "").trim();
 
@@ -100,9 +101,9 @@ Professional, friendly, and concise.
         }
 
         // Parse model response and fall back to a helpful default reply.
-        const grokData = await response.json();
+        const grokPayload = await response.json();
         const reply =
-            grokData?.choices?.[0]?.message?.content ||
+            grokPayload?.choices?.[0]?.message?.content ||
             "I can help you with IndiaGPT services like websites, AI chatbots, and automation.";
 
         return new Response(
