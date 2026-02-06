@@ -21,16 +21,16 @@ export async function onRequestPost(context) {
             return rateLimit.response;
         }
 
-        const { data, error } = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
-        if (error) {
-            const status = error === "Payload too large." ? 413 : 400;
+        const payloadResult = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
+        if (payloadResult.error) {
+            const status = payloadResult.error === "Payload too large." ? 413 : 400;
             return new Response(
-                JSON.stringify({ success: false, error }),
+                JSON.stringify({ success: false, error: payloadResult.error }),
                 { status, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        const body = data || {};
+        const body = payloadResult.data || {};
 
         const name = (body.name || "").trim();
         const email = (body.email || "").trim();
