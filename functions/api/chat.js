@@ -18,7 +18,7 @@ export async function onRequestPost(context) {
             return rateLimit.response;
         }
 
-        const { data, error } = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
+        const { data: requestData, error } = await parseJsonWithLimit(request, MAX_PAYLOAD_BYTES);
         if (error) {
             const status = error === "Payload too large." ? 413 : 400;
             return new Response(
@@ -27,7 +27,7 @@ export async function onRequestPost(context) {
             );
         }
 
-        const body = data || {};
+        const body = requestData || {};
         const userMessageRaw = (body.message || "").trim();
 
         if (!userMessageRaw) {
